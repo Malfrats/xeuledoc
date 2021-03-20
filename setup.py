@@ -4,7 +4,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='xeuledoc',
-    version="1",
+    version="1.0",
     packages=find_packages(),
     author="Malfrats",
     install_requires=["httpx"],

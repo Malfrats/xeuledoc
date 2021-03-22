@@ -25,54 +25,53 @@ def doc_hunt(doc_link):
     req = client.get(url)
     if "File not found" in str(req.text):
         print("This file does not exist or is not public")
+    elif "rateLimitExceeded" in req.text:
+        print("Rate Limit Exceeded. Try again later.")
     else:
         data = json.loads(req.text)
-        if "rateLimitExceeded" in data:
-            print("Rate Limit Exceeded. Try again later.")
-        else:
-            # Extracting informations
+        # Extracting informations
 
-            # Dates
+        # Dates
 
-            created_date = datetime.strptime(data["createdDate"], '%Y-%m-%dT%H:%M:%S.%fz')
-            modified_date = datetime.strptime(data["modifiedDate"], '%Y-%m-%dT%H:%M:%S.%fz')
+        created_date = datetime.strptime(data["createdDate"], '%Y-%m-%dT%H:%M:%S.%fz')
+        modified_date = datetime.strptime(data["modifiedDate"], '%Y-%m-%dT%H:%M:%S.%fz')
 
-            print(f"[+] Creation date : {created_date.strftime('%Y/%m/%d %H:%M:%S')} (UTC)")
-            print(f"[+] Last edit date : {modified_date.strftime('%Y/%m/%d %H:%M:%S')} (UTC)")
+        print(f"[+] Creation date : {created_date.strftime('%Y/%m/%d %H:%M:%S')} (UTC)")
+        print(f"[+] Last edit date : {modified_date.strftime('%Y/%m/%d %H:%M:%S')} (UTC)")
 
-            # Permissions
+        # Permissions
 
-            user_permissions = []
-            if data["userPermission"]:
-                if data["userPermission"]["id"] == "me":
-                    user_permissions.append(data["userPermission"]["role"])
-                    if "additionalRoles" in data["userPermission"]:
-                        user_permissions += data["userPermission"]["additionalRoles"]
+        user_permissions = []
+        if data["userPermission"]:
+            if data["userPermission"]["id"] == "me":
+                user_permissions.append(data["userPermission"]["role"])
+                if "additionalRoles" in data["userPermission"]:
+                    user_permissions += data["userPermission"]["additionalRoles"]
 
-            public_permissions = []
-            owner = None
-            for permission in data["permissions"]:
-                if permission["id"] in ["anyoneWithLink", "anyone"]:
-                    public_permissions.append(permission["role"])
-                    if "additionalRoles" in data["permissions"]:
-                        public_permissions += permission["additionalRoles"]
-                elif permission["role"] == "owner":
-                    owner = permission
+        public_permissions = []
+        owner = None
+        for permission in data["permissions"]:
+            if permission["id"] in ["anyoneWithLink", "anyone"]:
+                public_permissions.append(permission["role"])
+                if "additionalRoles" in data["permissions"]:
+                    public_permissions += permission["additionalRoles"]
+            elif permission["role"] == "owner":
+                owner = permission
 
-            print("\nPublic permissions :")
-            for permission in public_permissions:
+        print("\nPublic permissions :")
+        for permission in public_permissions:
+            print(f"- {permission}")
+
+        if public_permissions != user_permissions:
+            print("[+] You have special permissions :")
+            for permission in user_permissions:
                 print(f"- {permission}")
 
-            if public_permissions != user_permissions:
-                print("[+] You have special permissions :")
-                for permission in user_permissions:
-                    print(f"- {permission}")
-
-            if owner:
-                print("\n[+] Owner found !\n")
-                print(f"Name : {owner['name']}")
-                print(f"Email : {owner['emailAddress']}")
-                print(f"Google ID : {owner['id']}")
+        if owner:
+            print("\n[+] Owner found !\n")
+            print(f"Name : {owner['name']}")
+            print(f"Email : {owner['emailAddress']}")
+            print(f"Google ID : {owner['id']}")
 
 def main():
     print('Twitter : @MalfratsInd')

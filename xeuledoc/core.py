@@ -28,7 +28,7 @@ def doc_hunt(doc_link):
     else:
         data = json.loads(req.text)
         if "rateLimitExceeded" in data:
-            print("Rate Limit Exceeded, try again later.")
+            print("Rate Limit Exceeded. Try again later.")
         else:
             # Extracting informations
 

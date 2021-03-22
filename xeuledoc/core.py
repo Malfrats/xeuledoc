@@ -81,3 +81,6 @@ def main():
         doc_hunt(sys.argv[1])
     else:
         exit("Please give the link to a Google resource.\nExample : xeuledoc https://docs.google.com/spreadsheets/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms")
+
+if __name__ == '__main__':
+    main()

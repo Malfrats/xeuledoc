@@ -4,16 +4,23 @@ from datetime import datetime
 from pathlib import Path
 import json
 import sys
-import os
 import sys
 
 import httpx
 
-# We change the current working directory to allow using xeuledoc from anywhere
-os.chdir(Path(__file__).parents[0])
 
-from lib.utils import *
+class TMPrinter():
+    def __init__(self):
+        self.max_len = 0
 
+    def out(self, text):
+        if len(text) > self.max_len:
+            self.max_len = len(text)
+        else:
+            text += (" " * (self.max_len - len(text)))
+        print(text, end='\r')
+    def clear(self):
+    	print(" " * self.max_len, end="\r")
 
 def doc_hunt(doc_link, tmprinter):
 
@@ -29,7 +36,7 @@ def doc_hunt(doc_link, tmprinter):
 
     url = f"https://clients6.google.com/drive/v2beta/files/{doc_id}?fields=alternateLink%2CcopyRequiresWriterPermission%2CcreatedDate%2Cdescription%2CdriveId%2CfileSize%2CiconLink%2Cid%2Clabels(starred%2C%20trashed)%2ClastViewedByMeDate%2CmodifiedDate%2Cshared%2CteamDriveId%2CuserPermission(id%2Cname%2CemailAddress%2Cdomain%2Crole%2CadditionalRoles%2CphotoLink%2Ctype%2CwithLink)%2Cpermissions(id%2Cname%2CemailAddress%2Cdomain%2Crole%2CadditionalRoles%2CphotoLink%2Ctype%2CwithLink)%2Cparents(id)%2Ccapabilities(canMoveItemWithinDrive%2CcanMoveItemOutOfDrive%2CcanMoveItemOutOfTeamDrive%2CcanAddChildren%2CcanEdit%2CcanDownload%2CcanComment%2CcanMoveChildrenWithinDrive%2CcanRename%2CcanRemoveChildren%2CcanMoveItemIntoTeamDrive)%2Ckind&supportsTeamDrives=true&enforceSingleParent=true&key=AIzaSyC1eQ1xj69IdTMeii5r7brs3R90eck-m7k"
 
-    retries = 10
+    retries = 100
     for retry in range(retries):
         req = client.get(url)
         if "File not found" in req.text:

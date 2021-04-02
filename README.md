@@ -1,5 +1,5 @@
 # xeuledoc
-![PyPI](https://img.shields.io/pypi/v/xeuledoc) ![PyPI - Week](https://img.shields.io/pypi/dw/xeuledoc) ![PyPI - Downloads](https://static.pepy.tech/badge/xeuledoc) ![PyPI - License](https://img.shields.io/pypi/l/xeuledoc)
+![PyPI](https://img.shields.io/pypi/v/xeuledoc) ![PyPI - Downloads](https://static.pepy.tech/badge/xeuledoc) ![PyPI - License](https://img.shields.io/pypi/l/xeuledoc)
 
 Fetch information about any public Google document.\
 It's working on :

@@ -3,6 +3,7 @@
 
 Fetch information about any public Google document.\
 It's working on :
+- Google Drive
 - Google Docs
 - Google Spreadsheets
 - Google Slides

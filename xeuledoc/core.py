@@ -24,7 +24,9 @@ class TMPrinter():
 
 def doc_hunt(doc_link, tmprinter):
 
-    doc_id = ''.join([x for x in doc_link.split("?")[0].split("/") if len(x) in (33, 44)])
+    doc_id = ''.join(
+        [x for x in doc_link.split("?")[0].split("/") if len(x) in {33, 44}]
+    )
     if doc_id:
         print(f"\nDocument ID : {doc_id}\n")
     else:
@@ -66,11 +68,10 @@ def doc_hunt(doc_link, tmprinter):
     # Permissions
 
     user_permissions = []
-    if data["userPermission"]:
-        if data["userPermission"]["id"] == "me":
-            user_permissions.append(data["userPermission"]["role"])
-            if "additionalRoles" in data["userPermission"]:
-                user_permissions += data["userPermission"]["additionalRoles"]
+    if data["userPermission"] and data["userPermission"]["id"] == "me":
+        user_permissions.append(data["userPermission"]["role"])
+        if "additionalRoles" in data["userPermission"]:
+            user_permissions += data["userPermission"]["additionalRoles"]
 
     public_permissions = []
     owner = None
